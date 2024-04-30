@@ -1,0 +1,34 @@
+﻿@model List<ProyectoObra.Domain.Entities.Contratacion>
+<h1>Contrataciones</h1>
+
+<a asp-controller="Contratacion" asp-action="Create" class="btn btn-primary mb-3">Create Contratacion</a>
+
+<table id="dt2" class="table table-striped">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th>Descripcion</th>
+            <th>Empresa</th>
+            <th>Fecha</th>
+            <th>Activo</th>
+            <th>Finalizado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contratacion in Model)
+        {
+            <tr>
+                <td>@contratacion.Descripcion</td>
+                <td>@contratacion.Empresa.Descripcion</td>
+                <td>@contratacion.FechaInicio</td>
+                <td>@contratacion.Activo</td>
+                <td>@contratacion.Finalizado</td>
+                <td>
+                    <a asp-controller="Contratacion" asp-action="Edit" asp-route-id="@contratacion.Id" class="btn btn-info"><i class="bi bi-pencil"></i></a>
+                    <a asp-controller="Contratacion" asp-action="Delete" asp-route-id="@contratacion.Id" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

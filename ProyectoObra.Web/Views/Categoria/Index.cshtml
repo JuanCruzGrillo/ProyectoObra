@@ -1,0 +1,27 @@
+﻿@model List<ProyectoObra.Domain.Entities.Categoria>
+
+<h1>Categorias</h1>
+
+<a asp-controller="Categoria" asp-action="Create" class="btn btn-primary mb-3">Crear categoria</a>
+
+<table id="dt2" class="table table-striped">
+    <thead>
+        <tr class="bg-primary text-white">
+          
+            <th>DESCRIPCION</th>
+            <th>ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var categoria in Model)
+        {
+            <tr>
+                <td>@categoria.Descripcion</td>
+                <td>
+                    <a asp-controller="Categoria" asp-action="Edit" asp-route-id="@categoria.Id" class="btn btn-info"><i class="bi bi-pencil"></i></a>
+                    <a asp-controller="Categoria" asp-action="Delete" asp-route-id="@categoria.Id" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

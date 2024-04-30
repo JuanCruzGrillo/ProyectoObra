@@ -1,0 +1,30 @@
+﻿@model List<ProyectoObra.Domain.Entities.Empleado>
+
+<h1>Empleados</h1>
+
+<a asp-controller="Empleado" asp-action="Create" class="btn btn-primary mb-3">Crear Empleado</a>
+
+<table id="dt2" class="table table-striped">
+    <thead>
+        <tr class="bg-primary text-white">
+        <th>Nombre y Apellido</th>
+            <th>Edad</th>
+            <th>Empresa</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var empleado in Model)
+        {
+            <tr>
+                <td>@empleado.FullName</td>
+                <td>@empleado.Age</td>
+                <td>@empleado.Empresa.Descripcion</td>
+                <td>
+                    <a asp-controller="Empleado" asp-action="Edit" asp-route-id="@empleado.Id" class="btn btn-info"><i class="bi bi-pencil"></i></a>
+                    <a asp-controller="Empleado" asp-action="Delete" asp-route-id="@empleado.Id" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

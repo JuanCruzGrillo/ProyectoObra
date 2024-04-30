@@ -1,0 +1,14 @@
+﻿@model ProyectoObra.Domain.Entities.Categoria
+
+<h1>Eliminar</h1>
+
+<form asp-action="Destroy" asp-controller="Categoria" method="post">
+    <input asp-for="Id" type="number" hidden />
+    <div class="mb-3">
+        <input asp-for="Descripcion" type="type" class="form-control" placeholder="Descripcion" disabled/>
+    </div>  
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-controller="Categoria" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

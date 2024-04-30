@@ -1,0 +1,17 @@
+﻿@model ProyectoObra.Domain.Entities.Contratacion;
+
+<h1>Form Edit</h1>
+
+<form asp-action="Update" asp-controller="Contratacion" method="post">
+    <input asp-for="Id" type="number" hidden/>
+    <div class="mb-3">
+        <input asp-for="Descripcion" type="type" class="form-control" placeholder="Descripcion" />
+    </div>
+    <div class="mb-3">
+        <input asp-for="idEmpresa" type="type" class="form-control" placeholder="Empresa" />
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-info">Update</button>
+        <a asp-controller="Contratacion" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>

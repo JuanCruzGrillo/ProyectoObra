@@ -1,0 +1,14 @@
+﻿@model ProyectoObra.Domain.Entities.Empresa;
+
+<h1>Crear Empresa</h1>
+
+<form asp-action="Crear" asp-controller="Empresa" method="post">
+    <div class="mb-3">
+        <input asp-for="Descripcion" type="type" class="form-control" placeholder="Descripcion"/>
+        <span asp-validation-for="Descripcion" class="badge text-warning"></span>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-controller="Empresa" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

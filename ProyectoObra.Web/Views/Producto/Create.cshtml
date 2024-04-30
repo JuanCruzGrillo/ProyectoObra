@@ -1,0 +1,33 @@
+﻿@model ProductoViewModel;
+<h1>Crear Producto</h1>
+
+<form asp-action="Crear" asp-controller="Producto" method="post">
+    <div class="mb-3">
+        <input asp-for="Descripcion" type="type" class="form-control" placeholder="Descripcion" />
+        <span asp-validation-for="Descripcion" class="badge text-warning"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoriaId" class="control-label"></label>
+        <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.Categoria"></select>
+        <span asp-validation-for="CategoriaId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RubroId" class="control-label"></label>
+        <select asp-for="RubroId" class="form-control" asp-items="ViewBag.Rubro"></select>
+        <span asp-validation-for="RubroId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <input asp-for="Precio" type="type" class="form-control" placeholder="Precio" />
+        <span asp-validation-for="Precio" class="badge text-warning"></span>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Crear</button>
+        <a asp-controller="Producto" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+   
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

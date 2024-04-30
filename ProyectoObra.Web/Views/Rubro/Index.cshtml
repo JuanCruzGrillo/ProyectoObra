@@ -1,0 +1,29 @@
+﻿@model List<ProyectoObra.Domain.Entities.Rubro>
+<h1>Rubros</h1>
+
+<a asp-controller="Rubro" asp-action="Create" class="btn btn-primary mb-3">Create Rubro</a>
+
+<table id="dt2" class="table table-striped">
+    <thead>
+        <tr class="bg-primary text-white">
+      
+            <th>DESCRIPCION</th>
+            <th>Empresa</th>
+            <th>ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rubro in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(m => rubro.Descripcion)</td>
+                <td>@Html.DisplayFor(m => rubro.Empresa.Descripcion)</td>
+                
+                <td>
+                    <a asp-controller="Rubro" asp-action="Edit" asp-route-id="@rubro.Id" class="btn btn-info"><i class="bi bi-pencil"></i></a>
+                    <a asp-controller="Rubro" asp-action="Delete" asp-route-id="@rubro.Id" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
