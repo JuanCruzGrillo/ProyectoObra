@@ -20,6 +20,9 @@ builder.Services.AddScoped<EmpresaService>();
 builder.Services.AddScoped<RubroService>();
 builder.Services.AddScoped<EmpleadoService>();
 builder.Services.AddScoped<ContratacionService>();
+builder.Services.AddScoped<ProductoService>();
+builder.Services.AddScoped<ContratacionProductoService>();
+
 
 builder.Services.AddControllersWithViews();
 /* era para google
@@ -55,7 +58,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}");
+    pattern: "{controller=Home}/{action=Index}/{(id)?}");
     endpoints.MapRazorPages();
 });
 app.Run();

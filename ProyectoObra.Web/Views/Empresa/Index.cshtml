@@ -7,10 +7,7 @@
 <table id="dt2" class="table table-striped">
     <thead>
         <tr class="bg-primary text-white">
-            @foreach (var empresa in Model[0].GetType().GetProperties())
-            {
-                <th>@empresa.Name</th>
-            }
+            <th>Descripcion</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -18,7 +15,6 @@
         @foreach (var empresa in Model)
         {
             <tr>
-                <td>@empresa.Id</td>
                 <td>@empresa.Descripcion</td>
                 <td>
                     <a asp-controller="Empresa" asp-action="Edit" asp-route-id="@empresa.Id" class="btn btn-info"><i class="bi bi-pencil"></i></a>

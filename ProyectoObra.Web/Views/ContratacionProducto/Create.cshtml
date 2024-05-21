@@ -1,0 +1,90 @@
+﻿@model ContratacionProductoViewModel;
+
+<h1>Añadir productos a contratacion</h1>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#Unidad').val('1');       
+        obtenerPrecio();
+
+        $('#ProductoId').change(function () {
+            obtenerPrecio();
+        });
+        $('#Unidad, #Precio').change(function () {
+            CalcularTotal();
+        });
+        function obtenerPrecio() {
+            var productId = $('#ProductoId').val();
+            $.ajax({
+                url: '/ContratacionProducto/GetPrecio', // URL de la acción en tu controlador
+                type: 'GET',
+                dataType: 'json',
+                data: { id: productId }, // El parámetro se llama "id" en la URL
+                success: function (data) {
+                    $('#Precio').val(data);
+                    $('#Unidad').val('1');
+                    CalcularTotal();
+                },
+                error: function () {
+                    console.error('Error al obtener el precio.');
+                }
+            });
+        }
+      
+              
+      function CalcularTotal() {
+            var precio = parseFloat($('#Precio').val());
+            var cantidad = parseFloat($('#Unidad').val());
+
+            // Verifica si los valores de precio y cantidad son números válidos
+            if (isNaN(precio) || isNaN(cantidad)) {
+                console.error('El precio o la cantidad no son números válidos.');
+                return;
+            }
+
+            var total = precio * cantidad;
+            $('#Total').val(total.toFixed(2)); // Actualiza el elemento con el total
+        }
+    });
+</script>   
+
+
+
+<form asp-action="Crear" asp-controller="ContratacionProducto" method="post">
+    <div class="mb-3">
+
+        <label  class="control-label">Contratacion</label>
+
+        <input  asp-for="ContratacionId" type="number" hidden />
+        <input asp-for="Contratacion.Descripcion" type="type" class="form-control" placeholder="Descripcion" disabled />
+    </div>
+    <div class="mb-3">
+        <label class="control-label">Empresa</label>
+        <input asp-for="Contratacion.Empresa.Descripcion" type="type" class="form-control" placeholder="Empresa" disabled />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductoId"  class="control-label">Producto</label>
+        <select  asp-for="ProductoId" class="form-control" asp-items="ViewBag.Producto"></select>
+        <span asp-validation-for="ProductoId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="control-label">Unidades</label>
+        <input asp-for="Unidad" type="type" class="form-control" placeholder="1" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Precio</label>
+        <input asp-for="Precio" type="type" class="form-control" placeholder="Precio"  />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Total</label>
+        <input id="Total" class="form-control" placeholder="Total" disabled/>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Añadir</button>
+        <a asp-controller="ContratacionProducto" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+

@@ -1,17 +1,17 @@
-﻿@model ProyectoObra.Domain.Entities.Contratacion;
+﻿@model ProductoViewModel;
 
 <h1>Eliminar productos</h1>
 
-<form asp-action="Destroy" asp-controller="Contratacion" method="post">
+<form asp-action="Destroy" asp-controller="Producto" method="post">
     <input asp-for="Id" type="number" hidden />
     <div class="mb-3">
         <input asp-for="Descripcion" type="type" class="form-control" placeholder="Descripcion" disabled />
     </div>
     <div class="mb-3">
-        <input asp-for="idEmpresa" type="type" class="form-control" placeholder="idEmpresa" disabled />
+        <input asp-for="CategoriaId" type="type" class="form-control" placeholder="idEmpresa" disabled />
     </div>  
     <div class="d-grid gap-2">
         <button type="submit" class="btn btn-danger">Delete</button>
-        <a asp-controller="Contratacion" asp-action="Index" class="btn btn-secondary">Cancel</a>
+        <a asp-controller="Producto" asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
 </form>

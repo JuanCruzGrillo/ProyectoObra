@@ -1,104 +1,130 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using ProyectoObra.Application.Servicios;
 using ProyectoObra.Domain.Entities;
 using ProyectoObra.Infrastructure.Context;
 using ProyectoObra.Web.Models;
+using System.Security.AccessControl;
 
-namespace Proyecto.Controllers
+namespace ProyectoObra.Web.Controllers
 {
     public class ProductoController : Controller
     {
-        private readonly AppDbContext _db;
+        private readonly ProductoService _productoService;
+        private readonly CategoriaService _categoriaService;
+        private readonly RubroService _rubroService;
 
 
-        public ProductoController(AppDbContext db)
+        public ProductoController(ProductoService productoService, CategoriaService categoriaService, RubroService rubroService)
         {
-            _db = db;
+            _productoService = productoService;
+            _categoriaService = categoriaService;
+            _rubroService = rubroService;
         }
-        public async Task<IActionResult> Index()
+        //Procedimiento para mostrar todos los registros en DT2
+        public IActionResult Index()
         {
-            var Productos = _db.Productos.Include(c => c.Categoria).Include(s => s.Rubro);
-            return View(await Productos.ToListAsync());
+            var productos = _productoService.ObtenerProductos();
+            return View(productos);
         }
-        public IActionResult Create()
-        {   
-            ViewData["Categoria"] = new SelectList(_db.Categorias, "Id", "Descripcion");
-            ViewData["Rubro"] = new SelectList(_db.Rubros, "Id", "Descripcion");
-            return View();
-        }
-
+        //Procedimiento para mostrar vista del form Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(ProductoViewModel model)        
+        public IActionResult Crear(ProductoViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var producto = new Producto()
-                {
-                    Descripcion = model.Descripcion,
-                    Precio = model.Precio,
-                    CategoriaId = model.CategoriaId,
-                    RubroId = model.RubroId
-                };
-                _db.Add(producto);
-                await _db.SaveChangesAsync();
+                _productoService.CrearProducto(CambiarModelaClase(model));
                 return RedirectToAction("Index");
 
             }
-
             return View("Create");
         }
-       
-
-        public async Task<IActionResult> Editar(int id)
+        public IActionResult Create()
         {
-            // Buscar el producto por ID en la base de datos
-            var producto = await _db.Productos.FindAsync(id);
+            ViewData["Categoria"] = new SelectList(_categoriaService.ObtenerCategorias(), "Id", "Descripcion");
+            ViewData["Rubro"] = new SelectList(_rubroService.ObtenerRubros(), "Id", "Descripcion");
 
-            // Verificar si el producto no existe
+            return View();
+
+        }
+
+        //Procedimiento para guardar el registro en la DB
+
+
+        //Procedimiento para mostrar la vista de form Edit
+        public IActionResult Edit(int id)
+        {
+            Producto? producto = _productoService.TraerProducto(id);
             if (producto == null)
             {
                 return NotFound();
             }
+            ViewData["Categoria"] = new SelectList(_categoriaService.ObtenerCategorias(), "Id", "Descripcion");
+            ViewData["Rubro"] = new SelectList(_rubroService.ObtenerRubros(), "Id", "Descripcion");
 
-            // Mapear el producto a ProductoViewModel (si es necesario)
-            var productoViewModel = new ProductoViewModel
+            return View(CambiarClaseaModel(producto));
+        }
+        //Procedimiento para actualizar el registro en la DB
+        [HttpPost]
+        public IActionResult Update(ProductoViewModel model)
+        {
+            if (ModelState.IsValid && model.Id > 0)
+            {
+                _productoService.ActualizarProducto(CambiarModelaClase(model));
+                return RedirectToAction("Index");
+            }
+            return View("Edit");
+        }
+        //Procedimiento para mostrar vista de form Delete
+
+        public IActionResult Delete(int id)
+        {
+            //Student? student = _db.Students.SingleOrDefault(s => s.Id == id);
+            Producto? producto = _productoService.TraerProducto(id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+            return View(CambiarClaseaModel(producto));
+        }
+
+        [HttpPost, ActionName("Destroy")]
+        public IActionResult Destroy(ProductoViewModel model)
+        {
+            if (ModelState.IsValid && model.Id > 0)
+            {
+                _productoService.EliminarProducto(CambiarModelaClase(model));
+                return RedirectToAction("Index");
+            }
+            return View("Delete");
+        }
+
+
+        public static Producto CambiarModelaClase(ProductoViewModel model)
+        {
+            var producto = new Producto()
+            {
+                Id = model.Id,
+                Descripcion = model.Descripcion,
+                CategoriaId = model.CategoriaId,
+                RubroId= model.RubroId,
+                Precio = model.Precio
+
+            };
+            return producto;
+        }
+        public static ProductoViewModel CambiarClaseaModel(Producto producto)
+        {
+            var model = new ProductoViewModel()
             {
                 Id = producto.Id,
                 Descripcion = producto.Descripcion,
+                CategoriaId = (int)producto.CategoriaId,
+                RubroId = (int)producto.RubroId,
                 Precio = producto.Precio
             };
-
-            // Poblar la lista de categorías en ViewBag (asegúrate de tener esta lógica en tu controlador)
-            ViewData["Categoria"] = new SelectList(_db.Categorias, "Id", "Descripcion");
-
-
-            // Pasar el ProductoViewModel a la vista
-            return View(productoViewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(ProductoViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var producto = new Producto()
-                {
-                    Id=model.Id,
-                    Descripcion = model.Descripcion,
-                    Precio = model.Precio,
-                    CategoriaId = model.CategoriaId
-                };
-                _db.Update(producto);
-                await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-
-            }
-            ViewData["Categoria"] = new SelectList(_db.Categorias, "idCategoria", "Descripcion", model.CategoriaId);
-            var Productos = _db.Productos.Include(c => c.Categoria).Include(s => s.Rubro);
-            return View(model);
+            return model;
         }
     }
 }

@@ -1,0 +1,35 @@
+﻿@model List<ProyectoObra.Domain.Entities.ContratacionProducto>
+
+
+<table id="dt2" class="table table-striped">
+    <thead>
+        <tr class="bg-primary text-white">
+                <th>Categoria</th>
+                <th>Rubro</th>
+            <th>Producto</th>
+            <th>Unidades</th>
+            <th>Precio</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int total = 0;
+        @foreach (var contratacionProducto in Model)
+        {
+            <tr>
+                        <td> @contratacionProducto.Producto.Categoria.Descripcion</td>
+                        <td> @contratacionProducto.Producto.Rubro.Descripcion</td>
+                <td>@contratacionProducto.Producto.Descripcion </td>
+                <td>@contratacionProducto.Unidad</td>
+                <td>@contratacionProducto.Precio</td>
+                <td>@contratacionProducto.Fecha</td>                
+               </tr>
+               total += contratacionProducto.Precio * contratacionProducto.Unidad;
+        }
+        }
+    </tbody>
+</table>
+    <div class="form-group">
+    <h3>Valor Total: @string.Format("{0:C}", total)</h3>
+    </div>

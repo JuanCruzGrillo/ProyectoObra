@@ -1,0 +1,35 @@
+﻿@model List<ProyectoObra.Domain.Entities.Contratacion>
+<h1>Contrataciones Activas</h1>
+
+<h3>Cargar Datos</h3>
+
+<table id="dt2" class="table table-striped">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th>Descripcion</th>
+            <th>Empresa</th>
+            <th>Fecha</th>
+            <th>Añadir</th>
+            <th>Detalles</th>
+            <th>Finalizar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contratacion in Model)
+        {
+            <tr>
+                <td>@contratacion.Descripcion</td>
+                <td>@contratacion.Empresa.Descripcion</td>
+                <td>@contratacion.FechaInicio</td>
+                <td>
+                    <a asp-controller="ContratacionProducto" asp-action="Create" asp-route-id="@contratacion.Id" class="btn btn-info"><i class="bi bi-building-fill-add"></i></a>
+                  </td> <td> <a asp-controller="ContratacionProducto" asp-action="Details" asp-route-id="@contratacion.Id" class="btn btn-info"><i class="bi bi-info-circle"></i></a>
+                </td>
+             <td>   <a asp-controller="Contratacion" asp-action="Finalizar" asp-route-id="@contratacion.Id" class="btn btn-info"><i class="bi bi-sign-stop-fill"></i></a>
+               </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Contratacion" asp-action="Create" class="btn btn-primary mb-3">Crear Contratacion</a>

@@ -19,7 +19,14 @@ namespace ProyectoObra.Application.Servicios
         {
             return _db.Contrataciones.Include(c => c.Empresa).ToList();
         }
-
+        public List<Contratacion> ObtenerContratacionesActivas()
+        {
+            return _db.Contrataciones.Include(c => c.Empresa).Where(c => c.Activo == true ).Where(c => c.Finalizado == false).ToList();
+        }
+        public List<Contratacion> ObtenerContratacionesFinalizadas()
+        {
+            return _db.Contrataciones.Include(c => c.Empresa).Where(c => c.Activo == true).Where(c => c.Finalizado == true).ToList();
+        }
 
         public void CrearContratacion(Contratacion contratacion)
         {
@@ -27,14 +34,13 @@ namespace ProyectoObra.Application.Servicios
             _db.Contrataciones.Add(contratacion);
             _db.SaveChanges();
         }
-
         public Contratacion TraerContratacion(int id)
         {
             try
             {
 
                 Contratacion contratacion;
-                contratacion = _db.Contrataciones.SingleOrDefault(s => s.Id == id);
+                contratacion = _db.Contrataciones.Include(c => c.Empresa).SingleOrDefault(s => s.Id == id);
                 return contratacion;
             }
             catch //Exception ex)
@@ -47,6 +53,15 @@ namespace ProyectoObra.Application.Servicios
             _db.Contrataciones.Update(contratacion);
             _db.SaveChanges();
         }
+
+        public void FinalizarContratacion(int id)
+        {
+            Contratacion contratacion = TraerContratacion(id);
+            contratacion.Finalizado = true;
+            _db.Contrataciones.Update(contratacion);
+            _db.SaveChanges();
+        }
+
         //Procedimiento para mostrar vista de form Delete
 
         public void EliminarContratacion(Contratacion contratacion)

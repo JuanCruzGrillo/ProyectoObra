@@ -17,3 +17,7 @@ html {
   min-height: 100%;
 }
 
+.highlight-last {
+    color: blue;
+    font-size: 1.5em;
+}

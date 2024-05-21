@@ -19,7 +19,7 @@ namespace ProyectoObra.Domain.Entities
         public int? ProductoId { get; set; }
 
         [ForeignKey("ProductoId")]
-        public virtual Producto Prodcuto { get; set; } = null!;
+        public virtual Producto Producto { get; set; } = null!;
 
         public int Unidad { get; set; }
         public int Precio { get; set; }

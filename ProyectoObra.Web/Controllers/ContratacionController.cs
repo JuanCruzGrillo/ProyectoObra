@@ -96,6 +96,17 @@ namespace ProyectoObra.Web.Controllers
             return View("Delete");
         }
 
+        public IActionResult Finalizar(int id)
+        {
+            if (id > 0)
+            {
+                _contratacionService.FinalizarContratacion(id);
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+        
+
 
         public static Contratacion CambiarModelaClase(ContratacionViewModel model)
         {
